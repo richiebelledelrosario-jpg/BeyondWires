@@ -128,6 +128,15 @@
             <small class="field-error" id="signupPasswordError"></small>
           </label>
 
+          <label class="panel-field">
+            <span>Confirm Password</span>
+            <span class="password-wrap">
+              <input id="signupConfirm" name="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" required>
+              <button class="eye-toggle" type="button" data-password="signupConfirm" aria-label="Show password" aria-pressed="false"><svg class="eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </span>
+            <small class="field-error" id="signupConfirmError"></small>
+          </label>
+
           <button class="primary-btn full" type="submit">Create Account</button>
         </form>
 
