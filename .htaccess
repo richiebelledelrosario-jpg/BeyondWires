@@ -1,0 +1,5 @@
+# BeyondWires: block direct access to setup/config files and folder listings.
+Options -Indexes
+<FilesMatch "^(config\.php|install\.php|migrate\.php|schema\.sql|update_2026_10\.sql|README\.md)$">
+    Require all denied
+</FilesMatch>
