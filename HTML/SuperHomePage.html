@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin - Beyond Wires</title>
+    <link rel="stylesheet" href="../CSS/SuperHomePage.css?v=20261024">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/BWTheme.css?v=20261024">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Theme is applied before the first paint. No saved choice = Light Mode. -->
+<script>
+  (function () {
+    var t = 'light';
+    try { t = JSON.parse(localStorage.getItem('bw_theme')) === 'dark' ? 'dark' : 'light'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+    <script src="../JS/api.js?v=20261024" defer></script>
+    <script src="../JS/SuperHomePage.js?v=20261024" defer></script>
+</head>
+<body>
+<div class="dashboard-container" id="app">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../Assets/forLighModeLogo.jpg" alt="Beyond Wires Logo" class="sidebar-logo logo-light" onerror="this.onerror=null;this.src='../Assets/bcklogo-removebg-preview.png'">
+        <img src="../Assets/fullbwlogo.png" alt="Beyond Wires Logo" class="sidebar-logo logo-dark">
+        <img src="../Assets/collapasedLogoLight.png" alt="Beyond Wires" class="logo-mini logo-light">
+        <img src="../Assets/BWLOGO.png" alt="Beyond Wires" class="logo-mini logo-dark">
+        </div>
+        <nav class="sidebar-nav" id="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-tab="dashboard" title="Dashboard"><i class="fa-solid fa-house"></i><span class="label">Dashboard</span></a>
+            <a href="#quotations" class="nav-item" data-tab="quotations" title="Quotation Management"><i class="fa-solid fa-file-invoice"></i><span class="label">Quotation Management</span></a>
+            <a href="#projects" class="nav-item" data-tab="projects" title="Project Summary"><i class="fa-solid fa-briefcase"></i><span class="label">Project Summary</span></a>
+            <a href="#financial" class="nav-item" data-tab="financial" title="Financial Summary"><i class="fa-solid fa-chart-pie"></i><span class="label">Financial Summary</span></a>
+            <a href="#activity" class="nav-item" data-tab="activity" title="Activity Log"><i class="fa-solid fa-clock-rotate-left"></i><span class="label">Activity Log</span></a>
+        </nav>
+        <div class="sidebar-section">
+            <span class="section-title">SYSTEM SUPPORT</span>
+            <a href="#settings" class="nav-item" data-tab="settings" title="Settings"><i class="fa-solid fa-gear"></i><span class="label">Settings</span></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+
+        <header class="top-bar">
+            <div class="page-breadcrumb-group">
+                <span class="breadcrumb-trail" id="page-crumb"></span>
+                <div class="title-row">
+                    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Minimize sidebar" title="Minimize sidebar"><i class="fa-solid fa-angles-left"></i></button>
+                    <h1 id="page-title"></h1>
+                </div>
+                <p id="page-sub"></p>
+            </div>
+
+            <div class="user-profile-area">
+                <div class="dropdown-container">
+                    <button class="notification-btn" id="notif-btn" data-dd="notif-dropdown" aria-label="Notifications">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-dot" id="notif-dot"></span>
+                    </button>
+                    <div class="dropdown-menu notif-menu" id="notif-dropdown" data-keep>
+                        <div class="dropdown-header"><strong>Notifications</strong><span class="mark-read" id="mark-read" role="button" tabindex="0">Mark all read</span></div>
+                        <div class="notif-list" id="notif-list"></div>
+                    </div>
+                </div>
+                <div class="dropdown-container">
+                    <div class="profile-card" id="profile-btn" data-dd="profile-dropdown">
+                        <span class="profile-avatar"><i class="fa-regular fa-user"></i></span>
+                        <div class="profile-info"><span class="profile-name" id="top-name">Super Admin</span><span class="profile-role">Super Admin</span></div>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-menu profile-menu" id="profile-dropdown">
+                        <button class="menu-btn" id="my-profile"><i class="fa-regular fa-user"></i> My Profile</button>
+                        <button class="menu-btn danger" id="logout"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= DASHBOARD ================= -->
+        <section class="tab-panel active" id="tab-dashboard">
+            <div class="tab-toolbar dash-toolbar">
+                <div class="dropdown-container export-dd"><button class="btn primary" id="dash-export" data-dd="dash-export-menu" aria-haspopup="menu"><i class="fa-solid fa-file-export"></i> Export Dashboard <i class="fa-solid fa-chevron-down" style="font-size:10px"></i></button>
+                    <div class="dropdown-menu export-menu" id="dash-export-menu" role="menu"><span class="menu-label">DOWNLOAD AS</span><button class="menu-btn" role="menuitem" data-export="dash:pdf"><i class="fa-solid fa-file-pdf"></i> PDF</button><button class="menu-btn" role="menuitem" data-export="dash:xlsx"><i class="fa-solid fa-file-excel"></i> Excel (.xlsx)</button><button class="menu-btn" role="menuitem" data-export="dash:csv"><i class="fa-solid fa-file-csv"></i> CSV</button></div></div>
+            </div>
+            <div class="kpi-grid">
+                <div class="card kpi-card" id="kpi-projects" tabindex="0" role="button" aria-label="Open project summary">
+                    <div class="kpi-top"><span class="kpi-label">TOTAL ACTIVE PROJECTS</span><span class="kpi-icon blue"><i class="fa-solid fa-briefcase"></i></span></div>
+                    <h2 class="kpi-value" id="kpi-projects-val">0</h2>
+                    <span class="kpi-sub up" id="kpi-projects-sub"></span>
+                </div>
+                <div class="card kpi-card" id="kpi-quotes" tabindex="0" role="button" aria-label="View pending quotations">
+                    <div class="kpi-top"><span class="kpi-label">PENDING QUOTATIONS</span><span class="kpi-icon amber"><i class="fa-solid fa-file-invoice"></i></span></div>
+                    <h2 class="kpi-value" id="kpi-quotes-val">0</h2>
+                    <span class="kpi-sub warn" id="kpi-quotes-sub"></span>
+                </div>
+                <div class="card kpi-card" id="kpi-revenue" tabindex="0" role="button" aria-label="View monthly revenue details">
+                    <div class="kpi-top"><span class="kpi-label">MONTHLY REVENUE</span><span class="kpi-icon green"><i class="fa-solid fa-peso-sign"></i></span></div>
+                    <h2 class="kpi-value" id="kpi-revenue-val">₱0</h2>
+                    <span class="kpi-sub up" id="kpi-revenue-sub"></span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="card card-pad">
+                    <div class="card-head">
+                        <div><strong>Performance Statistics</strong><p id="chart-subtitle"></p></div>
+                        <div class="controls-row">
+                            <div class="seg-group" id="metric-tabs">
+                                <button class="seg-btn active" data-metric="revenue">Revenue</button>
+                                <button class="seg-btn" data-metric="projects">Projects</button>
+                                <button class="seg-btn" data-metric="quotes">Quotations</button>
+                            </div>
+                            <div class="seg-group" id="range-tabs">
+                                <button class="seg-btn" data-range="3">3M</button>
+                                <button class="seg-btn active" data-range="6">6M</button>
+                                <button class="seg-btn" data-range="12">12M</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-tiles" id="stat-tiles"></div>
+                    <div class="chart-wrap" id="chart-wrap">
+                        <div class="chart-tip" id="chart-tip"></div>
+                        <svg id="chart-svg" viewBox="0 0 720 260" preserveAspectRatio="xMidYMid meet"></svg>
+                    </div>
+                </div>
+                <div class="card card-pad">
+                    <div class="card-head"><div><strong>Status Breakdown</strong><p>Updates as system status changes</p></div></div>
+                    <div id="breakdown"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-card-head">
+                    <strong>Recent Operations</strong>
+                    <a href="#activity" id="view-activity">View Activity Log <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i></a>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>EVENT ID</th><th>DESCRIPTION</th><th>ADMINISTRATOR</th><th>TIMESTAMP</th><th class="text-right">STATUS</th></tr></thead>
+                        <tbody id="events-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= QUOTATIONS ================= -->
+        <section class="tab-panel" id="tab-quotations">
+            <div class="tab-toolbar">
+                <div class="search-input-wrapper"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="q-search" placeholder="Search requests..."></div>
+                <div class="seg-group scroll-x" id="q-tabs" role="tablist" aria-label="Filter by status"></div>
+            </div>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>REQUEST ID</th><th>CUSTOMER NAME</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th><th class="text-right">ACTIONS</th></tr></thead>
+                        <tbody id="q-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="q-pager"></div>
+            </div>
+
+            <div class="action-panels">
+                <div id="panel-revision" class="bottom-panel">
+                    <div class="panel-header header-blue">
+                        <div class="panel-title"><i class="fa-solid fa-rocket"></i><span id="rev-title">Edit Quotation</span></div>
+                        <button class="panel-close" data-panel-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="panel-body">
+                        <div id="rev-items"></div>
+                        <div class="form-row">
+                            <div class="field"><label>TRANSPORT / OTHER EXPENSES (₱)</label><input type="number" min="0" max="1000000" step="0.01" id="rev-transport" placeholder="0.00"></div>
+                            <div class="field"><label for="rev-validity">VALIDITY (DAYS)</label><input type="number" id="rev-validity" required data-check="int" min="1" max="30" step="1" value="30">
+                                <small class="field-hint">How many days the customer can accept this quotation at these prices. 1 to 30 days; 30 is standard.</small></div>
+                        </div>
+                        <div class="rev-totals" id="rev-totals" style="margin:8px 0 12px;font-size:13px;line-height:1.7"></div>
+                        <div class="field"><label>MODIFY TERMS / SCOPE NOTES</label><textarea id="rev-notes" rows="3" placeholder="Updated scope details..."></textarea></div>
+                        <div class="panel-actions">
+                            <button class="btn primary" id="rev-send">Save Changes</button>
+                            <button class="btn secondary" data-panel-close>Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-reject" class="bottom-panel">
+                    <div class="panel-header header-dark">
+                        <div class="panel-title"><i class="fa-solid fa-ban"></i><span id="rej-title">Reject with Feedback</span></div>
+                        <button class="panel-close" data-panel-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="field">
+                            <label for="rej-reason">REASON FOR REJECTION</label>
+                            <select id="rej-reason" required><option value="" selected disabled>Select a reason</option><option>Pricing error</option><option>Wrong items or quantities</option><option>Labor or crew needs adjusting</option><option>Missing details</option><option>Others</option></select>
+                        </div>
+                        <div class="field" id="rej-other-wrap" hidden><label for="rej-other">PLEASE SPECIFY</label><input id="rej-other" type="text" required minlength="3" maxlength="100" placeholder="Type the reason"></div>
+                        <div class="field"><label for="rej-notes">COMMENT FOR THE ADMIN</label><textarea id="rej-notes" minlength="10" maxlength="400" rows="3" placeholder="What should the admin change? This is sent to the admin, not the customer."></textarea></div>
+                        <div class="panel-actions"><button class="btn danger block" id="rej-send">Return to Admin for Changes</button></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROJECTS ================= -->
+        <section class="tab-panel" id="tab-projects">
+            <div class="count-row" id="p-counts"></div>
+            <div class="tab-toolbar">
+                <div class="search-input-wrapper"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="p-search" placeholder="Search projects..."></div>
+                <label class="dropdown-filter"><i class="fa-solid fa-circle-dot"></i>
+                    <select id="p-status"><option value="all">All Status</option><option value="active">Active</option><option value="completed">Completed</option><option value="hold">On Hold</option></select>
+                </label>
+                <label class="dropdown-filter" title="Start date from"><i class="fa-regular fa-calendar"></i> From <input type="date" id="p-from"></label>
+                <label class="dropdown-filter" title="Start date to"><i class="fa-regular fa-calendar"></i> To <input type="date" id="p-to"></label>
+                <button class="btn secondary" id="p-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="card">
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>PROJECT ID</th><th>CLIENT &amp; SCOPE</th><th>START DATE</th><th>STATUS</th></tr></thead>
+                        <tbody id="p-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="p-pager"></div>
+            </div>
+        </section>
+
+        <!-- ================= FINANCIAL ================= -->
+        <section class="tab-panel" id="tab-financial">
+            <!-- Cash basis: money counts when it moves. Built by renderFinance() from /owner/finance/overview. -->
+            <div class="tab-toolbar fin-toolbar">
+                <div class="time-filter-group" id="fin-period" role="group" aria-label="Quick periods">
+                    <button class="filter-tab" data-period="Q1">Q1</button>
+                    <button class="filter-tab" data-period="Q2">Q2</button>
+                    <button class="filter-tab" data-period="Q3">Q3</button>
+                    <button class="filter-tab" data-period="Q4">Q4</button>
+                    <button class="filter-tab active" data-period="YTD">YTD</button>
+                </div>
+                <div class="fin-filters">
+                    <label>FROM<input type="date" id="fin-from" required></label>
+                    <label>TO<input type="date" id="fin-to" required></label>
+                    <label>PROJECT<select id="fin-project"><option value="0">All projects</option></select></label>
+                    <label>CATEGORY<select id="fin-category"><option value="all">All categories</option></select></label>
+                </div>
+                <div class="dropdown-container export-dd"><button class="btn primary" id="fin-export" data-dd="fin-export-menu" aria-haspopup="menu"><i class="fa-solid fa-file-export"></i> Export Report <i class="fa-solid fa-chevron-down" style="font-size:10px"></i></button>
+                    <div class="dropdown-menu export-menu" id="fin-export-menu" role="menu"><span class="menu-label">DOWNLOAD AS</span><button class="menu-btn" role="menuitem" data-export="fin:pdf"><i class="fa-solid fa-file-pdf"></i> PDF</button><button class="menu-btn" role="menuitem" data-export="fin:xlsx"><i class="fa-solid fa-file-excel"></i> Excel (.xlsx)</button><button class="menu-btn" role="menuitem" data-export="fin:csv"><i class="fa-solid fa-file-csv"></i> CSV</button></div></div>
+            </div>
+            <p class="fin-err" id="fin-err" role="alert" hidden></p>
+
+            <div class="fin-grid">
+                <div class="card card-pad">
+                    <div class="kpi-top"><span class="kpi-icon blue"><i class="fa-solid fa-arrow-down"></i></span></div>
+                    <span class="kpi-label fin-label">CASH RECEIVED</span>
+                    <h2 class="kpi-value" id="fin-in">₱0</h2>
+                    <span class="kpi-subtext">Confirmed customer payments</span>
+                </div>
+                <div class="card card-pad">
+                    <div class="kpi-top"><span class="kpi-icon red"><i class="fa-solid fa-arrow-up"></i></span></div>
+                    <span class="kpi-label fin-label">CASH PAID OUT</span>
+                    <h2 class="kpi-value" id="fin-out">₱0</h2>
+                    <span class="kpi-subtext">Recorded expenses (voided ones excluded)</span>
+                </div>
+                <div class="card card-pad">
+                    <div class="kpi-top"><span class="kpi-icon green"><i class="fa-solid fa-right-left"></i></span></div>
+                    <span class="kpi-label fin-label">NET CASH MOVEMENT</span>
+                    <h2 class="kpi-value" id="fin-net">₱0</h2>
+                    <span class="kpi-subtext">Cash received minus cash paid out</span>
+                </div>
+                <div class="card card-pad">
+                    <div class="kpi-top"><span class="kpi-icon dark"><i class="fa-solid fa-hourglass-half"></i></span></div>
+                    <span class="kpi-label fin-label">OUTSTANDING RECEIVABLES</span>
+                    <h2 class="kpi-value" id="fin-recv">₱0</h2>
+                    <span class="kpi-subtext">Still owed on approved quotations</span>
+                </div>
+            </div>
+
+            <div class="card card-pad fin-profit">
+                <div><strong>Net profit (cash basis)</strong><p>Revenue is cash received minus the 12% VAT, which belongs to the BIR. A quotation is not counted until it is paid.</p></div>
+                <div class="fin-eq">
+                    <div><span>Revenue (excl. VAT)</span><b id="fin-rev">₱0</b><small id="fin-vat">VAT collected ₱0</small></div>
+                    <i class="fa-solid fa-minus" aria-hidden="true"></i>
+                    <div><span>Expenses</span><b id="fin-exp">₱0</b></div>
+                    <i class="fa-solid fa-equals" aria-hidden="true"></i>
+                    <div><span>Net profit</span><b id="fin-profit">₱0</b><small id="fin-margin">Margin: —</small></div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="card card-pad">
+                    <div class="card-head">
+                        <div><strong>Cash In vs Cash Out</strong><p>Per month in the selected range</p></div>
+                        <div class="chart-legend"><span class="legend-item"><span class="dot blue"></span> Cash in</span><span class="legend-item"><span class="dot red"></span> Cash out</span></div>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="trendChart" aria-label="Cash in and cash out per month" role="img"></canvas></div>
+                </div>
+                <div class="card card-pad">
+                    <div class="card-head"><div><strong>Expenses by Category</strong><p>For the selected range and filters</p></div></div>
+                    <div class="chart-wrapper donut-wrapper"><canvas id="expenseDonutChart" aria-label="Expenses by category" role="img"></canvas></div>
+                    <div class="donut-legend-list" id="fin-donut-legend"></div>
+                </div>
+            </div>
+
+            <div class="card" style="overflow:visible">
+                <div class="table-card-head">
+                    <div><strong>Expenses</strong><p class="table-sub">Money actually paid out. Wrong entries are voided with a reason, never deleted.</p></div>
+                    <div class="table-actions">
+                        <select id="fin-exp-status" class="fin-mini-select" aria-label="Show"><option value="Active">Active</option><option value="Void">Voided</option><option value="all">All</option></select>
+                        <button class="btn primary sm" id="fin-exp-add"><i class="fa-solid fa-plus"></i> Record expense</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table><thead><tr><th>DATE</th><th>CATEGORY</th><th>DESCRIPTION</th><th>PROJECT</th><th>AMOUNT</th><th>STATUS</th><th class="text-right">ACTIONS</th></tr></thead>
+                    <tbody id="fin-exp-tbody"></tbody></table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="table-card-head"><div><strong>Project Profitability</strong><p class="table-sub">Estimated costs are the supplier cost of the quoted products plus the labor and extra expenses on the quotation. Actual costs are the expenses recorded on the project. Realized profit = payments received (excl. VAT) minus actual costs.</p></div></div>
+                <div class="table-responsive">
+                    <table><thead><tr><th>PROJECT</th><th>CONTRACT</th><th>PAID</th><th>BALANCE</th><th>EST. COSTS</th><th>EST. PROFIT</th><th>ACTUAL COSTS</th><th>REALIZED PROFIT</th></tr></thead>
+                    <tbody id="fin-proj-tbody"></tbody></table>
+                </div>
+            </div>
+
+            <div class="card" style="overflow:visible">
+                <div class="table-card-head">
+                    <strong>Monthly Breakdown</strong>
+                    <div class="table-actions"><button class="btn secondary sm" id="fin-csv" title="Download CSV" aria-label="Download monthly breakdown as CSV"><i class="fa-solid fa-download"></i></button></div>
+                </div>
+                <div class="table-responsive">
+                    <table id="fin-table">
+                        <thead><tr><th>MONTH</th><th>CASH IN</th><th>VAT</th><th>REVENUE (EXCL. VAT)</th><th>EXPENSES</th><th>NET PROFIT</th><th>NET CASH</th></tr></thead>
+                        <tbody id="fin-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ACTIVITY ================= -->
+        <section class="tab-panel" id="tab-activity">
+            <div class="tab-toolbar">
+                <button class="btn primary" id="act-add"><i class="fa-solid fa-user-plus"></i> Add Account</button>
+                <button class="btn danger" id="act-del"><i class="fa-solid fa-user-minus"></i> Delete Account</button>
+            </div>
+
+            <div class="tab-toolbar">
+                <div class="search-input-wrapper"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="l-search" placeholder="Search activity..."></div>
+                <label class="dropdown-filter"><i class="fa-solid fa-user-shield"></i>
+                    <select id="l-admin"><option value="all">All Administrators</option></select>
+                </label>
+                <button class="btn dark" id="l-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="card">
+                <div class="table-card-head"><strong>Activity Log</strong><span class="muted-text">Important actions taken by administrators</span></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>ADMINISTRATOR</th><th>ACTIVITY</th><th>DATE &amp; TIME</th></tr></thead>
+                        <tbody id="l-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="l-pager"></div>
+            </div>
+
+            <div class="card">
+                <div class="table-card-head"><strong>Administrator Accounts</strong></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>ACCOUNT</th><th>ROLE</th><th>LAST ACTIVITY</th><th class="text-right">ACTIONS</th></tr></thead>
+                        <tbody id="a-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="a-pager"></div>
+            </div>
+        </section>
+
+        <!-- ================= SETTINGS ================= -->
+        <section class="tab-panel" id="tab-settings">
+            <div class="tab-toolbar" style="justify-content:flex-end">
+                <span class="st-status" id="stStatus"><i class="fa-solid fa-circle-check"></i><span id="stStatusText">All settings up to date</span></span>
+            </div>
+
+            <div class="card st-card">
+                <div class="st-card-head">
+                    <span class="st-ico"><i class="fa-solid fa-palette"></i></span>
+                    <div><h3>Theme</h3><p>Choose how BeyondWires looks across your dashboard.</p></div>
+                </div>
+                <div class="st-theme-row">
+                    <button type="button" class="st-theme" data-theme-opt="light" aria-pressed="false">
+                        <span class="st-thumb light"><span class="tb-side"></span><span class="tb-main"><span></span><span></span></span></span>
+                        <span class="st-theme-text"><b>Light Mode <em class="st-active">ACTIVE</em></b><small>A bright interface for everyday work.</small></span>
+                        <span class="st-radio"></span>
+                    </button>
+                    <button type="button" class="st-theme" data-theme-opt="dark" aria-pressed="false">
+                        <span class="st-thumb dark"><span class="tb-side"></span><span class="tb-main"><span></span><span></span></span></span>
+                        <span class="st-theme-text"><b>Dark Mode <em class="st-active">ACTIVE</em></b><small>Reduced glare for low-light environments.</small></span>
+                        <span class="st-radio"></span>
+                    </button>
+                    <button type="button" class="btn primary" id="stSaveTheme">Save theme</button>
+                </div>
+            </div>
+
+            <div class="card st-card">
+                <div class="st-card-head">
+                    <span class="st-ico"><i class="fa-solid fa-percent"></i></span>
+                    <div><h3>Pricing</h3><p>Product prices in the catalog are supplier prices. New quotation lines for products start at the supplier price plus this markup. Services and packages get no markup.</p></div>
+                </div>
+                <form class="st-col st-markup" id="stMarkupForm" novalidate onsubmit="return false">
+                    <div class="st-field">
+                        <label for="stMarkup">Markup on supplier prices (%)</label>
+                        <div class="st-input"><i class="fa-solid fa-percent"></i><input type="number" id="stMarkup" required min="0" max="300" step="0.01" placeholder="e.g. 20"></div>
+                        <small class="st-hint" id="stMarkupHint">Example: a ₱3,000 camera from the supplier is quoted at ₱3,600 with 20%. Existing quotations do not change.</small>
+                        <small class="st-err" id="stMarkupErr"></small>
+                    </div>
+                    <div class="st-actions"><button type="submit" class="btn primary" id="stMarkupSave">Save markup</button></div>
+                </form>
+            </div>
+
+            <div class="card st-card">
+                <div class="st-card-head">
+                    <span class="st-ico"><i class="fa-solid fa-user-gear"></i></span>
+                    <div><h3>Account settings</h3><p>Edit your profile details and keep your sign-in credentials secure.</p></div>
+                </div>
+                <div class="st-split">
+                    <form class="st-col" id="stProfileForm" novalidate onsubmit="return false">
+                        <h4 class="st-sec"><i class="fa-regular fa-user"></i> Personal information</h4>
+                        <div class="st-field">
+                            <label for="stFullName">Full name</label>
+                            <div class="st-input"><i class="fa-regular fa-user"></i><input type="text" id="stFullName" autocomplete="name" required data-check="name"></div>
+                            <small class="st-err" id="stFullNameErr"></small>
+                        </div>
+                        <div class="st-field">
+                            <label for="stEmail">Email address</label>
+                            <div class="st-input"><i class="fa-regular fa-envelope"></i><input type="text" id="stEmail" autocomplete="email" required data-check="email"></div>
+                            <small class="st-hint">Used for account notices. Changes are saved when you leave the field.</small>
+                            <small class="st-err" id="stEmailErr"></small>
+                        </div>
+                    </form>
+
+                    <form class="st-col" id="stPwForm" novalidate>
+                        <h4 class="st-sec"><i class="fa-solid fa-lock"></i> Change password</h4>
+                        <div class="st-field">
+                            <label for="stCurPw">Current password</label>
+                            <div class="st-input"><input type="password" id="stCurPw" autocomplete="current-password" required><button type="button" class="st-eye" data-target="stCurPw" aria-label="Show password"></button></div>
+                            <small class="st-err" id="stCurPwErr"></small>
+                        </div>
+                        <div class="st-two">
+                            <div class="st-field">
+                                <label for="stNewPw">New password</label>
+                                <div class="st-input"><input type="password" id="stNewPw" autocomplete="new-password" required data-check="password"><button type="button" class="st-eye" data-target="stNewPw" aria-label="Show password"></button></div>
+                                <small class="st-err" id="stNewPwErr"></small>
+                            </div>
+                            <div class="st-field">
+                                <label for="stConfPw">Confirm password</label>
+                                <div class="st-input"><input type="password" id="stConfPw" autocomplete="new-password" required data-check="match:stNewPw"><button type="button" class="st-eye" data-target="stConfPw" aria-label="Show password"></button></div>
+                                <small class="st-err" id="stConfPwErr"></small>
+                            </div>
+                        </div>
+                        <div class="st-pwhint"><i class="fa-solid fa-circle-info"></i> Use at least 8 characters and include a number.</div>
+                        <div class="st-actions right"><button type="submit" class="st-btn-outline">Change password</button></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ===== Modals ===== -->
+<div class="modal-overlay" id="modal-expense">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="exp-title">
+        <div class="modal-header"><h3 id="exp-title">Record expense</h3><button class="close-modal-btn" data-close="modal-expense" aria-label="Close">&times;</button></div>
+        <p class="modal-subtitle">Money that was actually paid out. Estimated costs on a quotation are not expenses.</p>
+        <div class="modal-body">
+            <div class="fin-form">
+                <div class="field"><label for="exp-date">DATE PAID</label><input type="date" id="exp-date" required data-check="past"></div>
+                <div class="field"><label for="exp-amount">AMOUNT (PHP)</label><input type="number" id="exp-amount" required data-check="money" min="0.01" max="10000000" step="0.01" placeholder="0.00"></div>
+                <div class="field"><label for="exp-cat">CATEGORY</label><select id="exp-cat" required></select></div>
+                <div class="field"><label for="exp-proj">PROJECT (OPTIONAL)</label><select id="exp-proj"><option value="0">Not tied to a project</option></select></div>
+                <div class="field full"><label for="exp-desc">DESCRIPTION</label><input type="text" id="exp-desc" required minlength="3" maxlength="255" placeholder="e.g. 4 cameras and a DVR from the supplier"></div>
+                <div class="field"><label for="exp-method">PAID BY (OPTIONAL)</label><select id="exp-method"><option value="">Not specified</option></select></div>
+                <div class="field"><label for="exp-ref">REFERENCE / OR NO. (OPTIONAL)</label><input type="text" id="exp-ref" maxlength="60"></div>
+            </div>
+            <p class="fin-err" id="exp-err" role="alert" hidden></p>
+        </div>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-expense">Cancel</button><button class="btn primary" id="exp-save">Save expense</button></div>
+    </div>
+</div>
+<div class="modal-overlay" id="modal-expview">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="ev-title">
+        <div class="modal-header"><h3 id="ev-title">Expense</h3><button class="close-modal-btn" data-close="modal-expview" aria-label="Close">&times;</button></div>
+        <div class="modal-body"><div class="ev-grid" id="ev-grid"></div><strong class="ev-h">History</strong><div id="ev-history" class="ev-history"></div></div>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-expview">Close</button><button class="btn secondary" id="ev-void"><i class="fa-solid fa-ban"></i> Void</button><button class="btn primary" id="ev-edit"><i class="fa-solid fa-pen"></i> Edit</button></div>
+    </div>
+</div>
+<div class="modal-overlay" id="modal-revenue">
+    <div class="modal-card">
+        <div class="modal-header"><h3>Monthly Revenue Summary</h3><button class="close-modal-btn" data-close="modal-revenue">&times;</button></div>
+        <p class="modal-subtitle">Real system calculations based on system financial logs.</p>
+        <div class="modal-body"><div class="item-list" id="rev-list"></div></div>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-revenue">Close</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-viewquote">
+  <div class="modal-card xl">
+    <div class="modal-header"><h3 id="qv-title">Quotation</h3><button class="close-modal-btn" data-close="modal-viewquote">&times;</button></div>
+    <p class="modal-subtitle" id="qv-sub"></p>
+    <div class="modal-body"><div class="qv-docs" id="qv-docs"></div><p class="modal-subtitle" id="qv-note" hidden style="margin:10px 0 0"></p></div>
+    <div class="modal-footer"><button class="btn secondary" data-close="modal-viewquote">Close</button>
+        <button class="btn secondary" id="qv-reject" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i> Reject</button>
+        <button class="btn secondary" id="qv-revise" hidden><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Edit</button>
+        <button class="btn primary" id="qv-approve" hidden><i class="fa-solid fa-check" aria-hidden="true"></i> Approve &amp; Send</button>
+        <button class="btn primary" id="qv-send" hidden><i class="fa-solid fa-paper-plane"></i> Send to Customer</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add">
+    <div class="modal-card sm">
+        <div class="modal-header"><h3>Add Administrator Account</h3><button class="close-modal-btn" data-close="modal-add">&times;</button></div>
+        <p class="modal-subtitle">New accounts are created with the Administrator role.</p>
+        <div class="field" id="fg-name"><label>FULL NAME</label><input type="text" id="add-name" required data-check="name" placeholder="e.g. Juan Dela Cruz"><div class="form-error" id="name-error">Please enter a name.</div></div>
+        <div class="field" id="fg-email"><label>EMAIL</label><input type="text" id="add-email" required data-check="email" placeholder="name@beyondwires.com"><div class="form-error" id="email-error">Please enter a valid email.</div></div>
+        <div class="field" id="fg-pass"><label>CREATE PASSWORD</label><input type="password" id="add-pass" required data-check="password" placeholder="At least 8 characters with a number" autocomplete="new-password"><div class="form-error">Use at least 8 characters and include a number.</div></div>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-add">Cancel</button><button class="btn primary" id="confirm-add">Add Account</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-delacct">
+    <div class="modal-card sm">
+        <div class="modal-header"><h3>Delete Account</h3><button class="close-modal-btn" data-close="modal-delacct">&times;</button></div>
+        <p class="modal-subtitle">Select the account you want to permanently remove.</p>
+        <div class="modal-body"><div class="item-list" id="delete-list"></div></div>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-delacct">Cancel</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-confirm">
+    <div class="modal-card sm">
+        <div class="modal-header"><h3>Confirm Delete</h3><button class="close-modal-btn" data-close="modal-confirm">&times;</button></div>
+        <p class="modal-text" id="confirm-text"></p>
+        <div class="modal-footer"><button class="btn secondary" data-close="modal-confirm">Cancel</button><button class="btn danger" id="confirm-yes">Yes, Delete</button></div>
+    </div>
+</div>
+
+<div class="toast-stack" id="toast-stack"></div>
+</body>
+</html>

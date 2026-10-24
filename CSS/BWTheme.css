@@ -1,0 +1,292 @@
+/* =====================================================================
+   BeyondWires - shared dashboard theme  |  CSS/BWTheme.css
+   Loaded LAST by HomePage.html, AdminHomePage.html and SuperHomePage.html
+   so the three dashboards share one look with the landing page:
+     1. BeyondWires palette (light + dark)
+     2. Sidebar + logos (open/collapsed, light/dark)
+     3. Header (breadcrumb, title, bell, profile)
+     4. Notifications (same layout and behaviour as the Super Admin page)
+     5. Subtle background detail (soft blue glow + faint grid) and cards
+   Palette (from LandingPage.css):
+     blue #0077F6 · deep blue #1B49B8 · navy #0B132B · ice #D4E6F1 · snow #F8FAFC
+     dark page #080B11 · dark section #0B132B · dark card #111827
+   ===================================================================== */
+
+/* ---------- 1. Palette ---------- */
+:root {
+    --bw-blue: #0077F6;
+    --bw-blue-deep: #1B49B8;
+    --bw-navy: #0B132B;
+    --bw-ice: #D4E6F1;
+    --bw-snow: #F8FAFC;
+    --bw-sky: #93C5FD;
+}
+
+/* Light mode (default): map each page's own tokens to the BeyondWires palette */
+html:not([data-theme="dark"]) {
+    --primary: #0077F6; --primary-hover: #1B49B8; --primary-light: #EAF3FE;
+    --blue: #0077F6; --blue-dark: #1B49B8; --blue-soft: #EAF3FE;
+    --bg-main: #F4F8FC; --bg: #F4F8FC;
+    --bw-page: #F4F8FC; --bw-card: #FFFFFF; --bw-line: #DCE8F2;
+    --bw-text: #0B132B; --bw-muted: #5A6B85; --bw-hover: #EEF5FC;
+}
+/* Super Admin + customer text tokens (the admin page sets its own in AdminHomePage.css) */
+html:not([data-theme="dark"]) body:not(.bw-admin) {
+    --text-main: #0B132B; --text-muted: #5A6B85; --border-color: #DCE8F2;
+}
+html:not([data-theme="dark"]) .app { --navy: #0B132B; --text: #0B132B; --muted: #5A6B85; --line: #DCE8F2; }
+
+/* Dark mode */
+html[data-theme="dark"] {
+    --primary: #0077F6; --primary-hover: #1B49B8;
+    --blue: #3B95F8; --blue-dark: #0077F6;
+    --bw-page: #080B11; --bw-card: #111a2e; --bw-line: #22324f;
+    --bw-text: #F8FAFC; --bw-muted: #9AAAC2; --bw-hover: #182540;
+}
+
+/* ---------- 2. Sidebar ---------- */
+html:not([data-theme="dark"]) .sidebar {
+    background:
+        radial-gradient(ellipse 120% 40% at 0% 0%, rgba(212, 230, 241, 0.65), transparent 70%),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 55%, #EEF5FB 100%) !important;
+    color: #0B132B;
+    border-right: 1px solid #D4E6F1;
+    box-shadow: 4px 0 24px rgba(11, 19, 43, 0.05);
+}
+html[data-theme="dark"] .sidebar {
+    background:
+        radial-gradient(ellipse 120% 35% at 0% 0%, rgba(0, 119, 246, 0.14), transparent 70%),
+        linear-gradient(180deg, #0B132B 0%, #080B11 100%) !important;
+    border-right: 1px solid rgba(212, 230, 241, 0.07);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+html:not([data-theme="dark"]) .sidebar-header,
+html:not([data-theme="dark"]) .sidebar-section { border-color: #E2ECF5; }
+html:not([data-theme="dark"]) .section-title { color: #7A8AA3; }
+
+html:not([data-theme="dark"]) .sidebar .nav-item { color: rgba(11, 19, 43, 0.72); }
+html:not([data-theme="dark"]) .sidebar .nav-item:not(.active):hover { color: #0077F6; background: rgba(0, 119, 246, 0.08); }
+html[data-theme="dark"] .sidebar .nav-item { color: #9AAAC2; }
+html[data-theme="dark"] .sidebar .nav-item:not(.active):hover { color: #FFFFFF; background: rgba(147, 197, 253, 0.08); }
+html .sidebar .nav-item.active {
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #0077F6 0%, #1B49B8 100%);
+    box-shadow: 0 6px 18px -6px rgba(0, 119, 246, 0.55);
+    font-weight: 600;
+}
+.sidebar .nav-item:focus-visible { outline: 2px solid #93C5FD; outline-offset: 2px; }
+
+/* Logos: black logo in light mode, white logo in dark mode, small mark when collapsed */
+/* The drawing sits in a wide strip (open sidebar) or a 4:3 area (collapsed) inside each logo image;
+   boxes of that shape with object-fit: cover trim the empty margin. The light-mode logos have a white
+   background, which multiply blends into the light sidebar. */
+.sidebar-header .sidebar-logo { width: 150px; height: 50px; max-width: none; max-height: none; object-fit: cover; }
+.sidebar-header .sidebar-logo.logo-light { object-position: 50% 55%; }
+.sidebar-header .logo-mini { width: 52px; height: 40px; object-fit: cover; }
+html:not([data-theme="dark"]) .sidebar .logo-light { mix-blend-mode: multiply; }
+html:not([data-theme="dark"]) .sidebar .logo-dark { display: none !important; }
+html[data-theme="dark"] .sidebar .logo-light { display: none !important; }
+
+/* ---------- 3. Header ---------- */
+.breadcrumb-trail { color: #0077F6 !important; }
+html[data-theme="dark"] .breadcrumb-trail { color: #93C5FD !important; }
+html:not([data-theme="dark"]) .title-row h1 { color: #0B132B; }
+html:not([data-theme="dark"]) .sidebar-toggle,
+html:not([data-theme="dark"]) .notification-btn,
+html:not([data-theme="dark"]) .profile-card { background: #FFFFFF; border-color: #DCE8F2; }
+.sidebar-toggle:hover, .notification-btn:hover, .profile-card:hover { color: #0077F6 !important; border-color: #0077F6 !important; }
+html:not([data-theme="dark"]) .profile-avatar:not(img) { background: #EAF3FE; color: #1B49B8; }
+html[data-theme="dark"] .profile-avatar:not(img) { background: rgba(0, 119, 246, 0.18); color: #93C5FD; }
+
+/* ---------- 4. Notifications (Super Admin layout, used on every page) ---------- */
+.notification-btn { position: relative; }
+.notification-btn > i { font-size: 15px; }
+.notification-dot {
+    position: absolute; top: 8px; right: 9px; width: 8px; height: 8px;
+    background: #ef4444; border: 2px solid var(--bw-card, #fff); border-radius: 50%;
+}
+.notif-menu { width: 320px; }
+.notif-menu .dropdown-header strong { color: var(--bw-text); font-size: 12px; }
+.notif-menu .mark-read { color: #0077F6; font-size: 11px; font-weight: 600; cursor: pointer; }
+html[data-theme="dark"] .notif-menu .mark-read { color: #93C5FD; }
+.notif-menu .notif-list { max-height: 300px; overflow-y: auto; }
+.notif-menu .notif-item {
+    display: block; padding: 10px 16px; border-bottom: 1px solid var(--bw-line);
+    font-size: 12px; line-height: 1.45; color: var(--bw-text); cursor: pointer; outline: 0;
+    transition: background-color 0.15s ease;
+}
+.notif-menu .notif-item:last-child { border-bottom: 0; }
+.notif-menu .notif-item strong { display: block; font-weight: 600; color: var(--bw-text); }
+.notif-menu .notif-item strong i { margin-right: 6px; opacity: 0.7; color: #0077F6; }
+html[data-theme="dark"] .notif-menu .notif-item strong i { color: #93C5FD; }
+.notif-menu .notif-item span { display: block; margin-top: 2px; font-size: 10px; color: var(--bw-muted); }
+.notif-menu .notif-item:hover, .notif-menu .notif-item:focus-visible { background: var(--bw-hover); }
+.notif-menu .notif-item:focus-visible { box-shadow: inset 3px 0 0 #0077F6; }
+html:not([data-theme="dark"]) .notif-menu .notif-item.unread { background: #EAF3FE; }
+html:not([data-theme="dark"]) .notif-menu .notif-item.unread:hover { background: #DFEEFD; }
+html[data-theme="dark"] .notif-menu .notif-item.unread { background: #14284a; }
+html[data-theme="dark"] .notif-menu .notif-item.unread:hover { background: #193256; }
+.notif-menu .notif-empty { padding: 18px; text-align: center; color: var(--bw-muted); font-size: 12px; }
+
+/* ---------- 5. Background detail + cards ---------- */
+/* Stage 10: the same look as the landing page's "Let's secure what matters to you" panel:
+   soft blue glows, a 5-10% blue gradient, thin diagonal lines and a faint grid (no extra elements).
+   "fixed" keeps the pattern still while the page scrolls. Dark mode uses the landing page's #080B11. */
+html:not([data-theme="dark"]) .main-content,
+html:not([data-theme="dark"]) .app > .main {
+    background:
+        radial-gradient(ellipse 60% 45% at 88% 0%, rgba(0, 119, 246, 0.10), transparent 70%),
+        radial-gradient(ellipse 50% 45% at 0% 100%, rgba(212, 230, 241, 0.85), transparent 70%),
+        repeating-linear-gradient(135deg, transparent 0 28px, rgba(27, 73, 184, 0.03) 28px 29px),
+        linear-gradient(rgba(27, 73, 184, 0.045) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(90deg, rgba(27, 73, 184, 0.045) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(135deg, rgba(0, 119, 246, 0.05) 0%, rgba(212, 230, 241, 0.35) 100%),
+        #F4F8FC;
+    background-attachment: fixed;
+}
+html[data-theme="dark"] .main-content,
+html[data-theme="dark"] .app > .main {
+    background:
+        radial-gradient(ellipse 60% 45% at 88% 0%, rgba(0, 119, 246, 0.18), transparent 70%),
+        radial-gradient(ellipse 50% 45% at 0% 100%, rgba(27, 73, 184, 0.20), transparent 70%),
+        repeating-linear-gradient(135deg, transparent 0 28px, rgba(147, 197, 253, 0.03) 28px 29px),
+        linear-gradient(rgba(147, 197, 253, 0.04) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(90deg, rgba(147, 197, 253, 0.04) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(135deg, rgba(0, 119, 246, 0.09) 0%, rgba(0, 119, 246, 0.05) 100%),
+        #080B11;
+    background-attachment: fixed;
+}
+html:not([data-theme="dark"]) body { background: #F4F8FC; }
+html[data-theme="dark"] body { background: #080B11; }
+html[data-theme="dark"] .dashboard-container,
+html[data-theme="dark"] .dashboard-layout { background: #080B11; }
+
+/* cards: clean ice-blue borders and a very soft shadow */
+html:not([data-theme="dark"]) .card,
+html:not([data-theme="dark"]) .kpi-card,
+html:not([data-theme="dark"]) .count-chip {
+    border-color: #DCE8F2;
+    box-shadow: 0 1px 2px rgba(11, 19, 43, 0.04), 0 10px 24px -18px rgba(27, 73, 184, 0.28);
+}
+/* a faint sheen on the top of the summary cards */
+html:not([data-theme="dark"]) .kpi-card,
+html:not([data-theme="dark"]) .stat,
+html:not([data-theme="dark"]) .stat-card {
+    background-image: linear-gradient(180deg, rgba(212, 230, 241, 0.32) 0, rgba(255, 255, 255, 0) 96px);
+}
+html[data-theme="dark"] .kpi-card,
+html[data-theme="dark"] .stat,
+html[data-theme="dark"] .stat-card {
+    background-image: linear-gradient(180deg, rgba(0, 119, 246, 0.07) 0, rgba(0, 119, 246, 0) 96px);
+}
+.stat:hover, .stat-card:hover { border-color: rgba(0, 119, 246, 0.55) !important; }
+
+/* primary buttons share the brand blue */
+.btn.primary, .btn-primary, .inq-primary { background-color: #0077F6; }
+.btn.primary:hover, .btn-primary:hover, .inq-primary:hover { background-color: #1B49B8; }
+
+/* toasts */
+.toast, .bw-toast, .inq-toast { background: #0B132B; color: #F8FAFC; border-color: #1B49B8; }
+
+/* keyboard focus is always visible */
+:where(button, a, [role="button"], input, select, textarea):focus-visible { outline: 2px solid #0077F6; outline-offset: 2px; }
+
+/* Customer initials: the same round 32px badge in every list (admin and super admin) */
+.mini-av, .client-badge, .customer-info .avatar, .b-cust .avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+
+/* ---------- 6. Buttons: one primary and one secondary look in all three portals ----------
+   Primary = brand blue (main action). Secondary = outlined (Cancel, Back, Close, View).
+   Only colors and states are set here; each page keeps its own sizes. */
+html[data-theme] :is(.btn-primary, .btn.primary, .mc-btn.pri, .inq-primary, .btn-primary-sm, .btn-quotation, .btn-accept, .bwm-btn.pri) {
+    background: #0077F6; border-color: #0077F6; color: #FFFFFF;
+}
+html[data-theme] :is(.btn-primary, .btn.primary, .mc-btn.pri, .inq-primary, .btn-primary-sm, .btn-quotation, .btn-accept, .bwm-btn.pri):not(:disabled):hover { background: #1B49B8; border-color: #1B49B8; }
+html[data-theme] :is(.btn-primary, .btn.primary, .mc-btn.pri, .inq-primary, .btn-primary-sm, .btn-quotation, .btn-accept, .bwm-btn.pri):not(:disabled):active { transform: translateY(1px); }
+
+html[data-theme="light"] :is(.btn-secondary, .btn.secondary, .mc-btn:not(.pri):not(.danger), .btn-details, .btn-outline, .btn-outline-sm, .bwm-btn.sec) {
+    background: #FFFFFF; border: 1px solid #C9D9EA; color: #0B132B;
+}
+html[data-theme="light"] :is(.btn-secondary, .btn.secondary, .mc-btn:not(.pri):not(.danger), .btn-details, .btn-outline, .btn-outline-sm, .bwm-btn.sec):not(:disabled):hover { background: #EEF5FC; border-color: #0077F6; color: #0077F6; }
+html[data-theme="dark"] :is(.btn-secondary, .btn.secondary, .mc-btn:not(.pri):not(.danger), .btn-details, .btn-outline, .btn-outline-sm, .bwm-btn.sec) {
+    background: #111a2e; border: 1px solid #2c3e60; color: #E2E8F0;
+}
+html[data-theme="dark"] :is(.btn-secondary, .btn.secondary, .mc-btn:not(.pri):not(.danger), .btn-details, .btn-outline, .btn-outline-sm, .bwm-btn.sec):not(:disabled):hover { background: #182540; border-color: #4DA3FF; color: #FFFFFF; }
+
+html[data-theme] :is(.mc-btn, .btn, .btn-primary, .btn-secondary, .btn-details, .btn-outline, .btn-outline-sm, .btn-accept, .btn-quotation, .btn-primary-sm, .inq-primary, .bwm-btn):disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.loading { position: relative; color: transparent !important; pointer-events: none; }
+.loading::after { content: ""; position: absolute; inset: 0; margin: auto; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .55); border-top-color: #FFFFFF; animation: bwSpin .7s linear infinite; }
+@keyframes bwSpin { to { transform: rotate(360deg); } }
+
+/* ---------- 7. Dialog (BW.confirm / BW.prompt / BW.reason / BW.alert in JS/api.js) ---------- */
+.bwm-overlay { position: fixed; inset: 0; z-index: 6000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(11, 19, 43, .55); backdrop-filter: blur(3px); animation: bwmFade .15s ease-out; }
+.bwm-card { position: relative; width: 100%; max-width: 380px; max-height: calc(100vh - 32px); overflow-y: auto; background: #FFFFFF; color: #0B132B; border: 1px solid #DCE8F2; border-radius: 16px; padding: 22px 22px 18px; box-shadow: 0 24px 48px -12px rgba(11, 19, 43, .35); font-size: 13.5px; animation: bwmPop .18s ease-out; }
+.bwm-head { display: flex; align-items: center; gap: 12px; padding-right: 28px; margin-bottom: 10px; }
+.bwm-head h3 { font-size: 16px; font-weight: 700; line-height: 1.3; margin: 0; }
+.bwm-ico { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; background: #EAF3FE; color: #0077F6; font-size: 17px; }
+.bwm-ico.danger { background: #FEE2E2; color: #DC2626; }
+.bwm-msg { margin: 0 0 14px; color: #4A5B76; line-height: 1.55; white-space: pre-line; }
+.bwm-msg:empty { display: none; }
+.bwm-label { display: block; margin: 10px 0 6px; font-size: 12px; font-weight: 700; color: #4A5B76; }
+.bwm-in { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #C9D9EA; border-radius: 10px; background: #FFFFFF; color: #0B132B; font: inherit; font-size: 14px; resize: vertical; }
+.bwm-in:focus { outline: none; border-color: #0077F6; box-shadow: 0 0 0 3px rgba(0, 119, 246, .15); }
+.bwm-err { display: block; min-height: 18px; margin-top: 6px; color: #DC2626; font-size: 12px; font-weight: 600; }
+.bwm-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.bwm-btn { min-width: 88px; height: 36px; padding: 0 16px; border-radius: 10px; border: 1px solid transparent; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.bwm-btn.danger { background: #DC2626; border-color: #DC2626; color: #FFFFFF; }
+.bwm-btn.danger:not(:disabled):hover { background: #B91C1C; }
+.bwm-x { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border: none; border-radius: 8px; background: transparent; color: #6E7C92; font-size: 16px; cursor: pointer; }
+.bwm-x:hover { background: #EEF5FC; color: #0B132B; }
+html[data-theme="dark"] .bwm-card { background: #111a2e; color: #F8FAFC; border-color: #22324f; }
+html[data-theme="dark"] .bwm-msg, html[data-theme="dark"] .bwm-label { color: #B6C3D8; }
+html[data-theme="dark"] .bwm-ico { background: rgba(0, 119, 246, .18); color: #4DA3FF; }
+html[data-theme="dark"] .bwm-ico.danger { background: rgba(220, 38, 38, .18); color: #F87171; }
+html[data-theme="dark"] .bwm-in { background: #0A1020; border-color: #2c3e60; color: #F8FAFC; }
+html[data-theme="dark"] .bwm-x { color: #9AAAC2; }
+html[data-theme="dark"] .bwm-x:hover { background: #182540; color: #FFFFFF; }
+html[data-theme="dark"] .bwm-err { color: #F87171; }
+@media (max-width: 480px) { .bwm-card { padding: 22px 18px 18px; } .bwm-actions .bwm-btn { flex: 1; } }
+@keyframes bwmFade { from { opacity: 0; } }
+@keyframes bwmPop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+@media (prefers-reduced-motion: reduce) { .bwm-overlay, .bwm-card { animation: none; } }
+
+/* ---------- 8. Icon-only action buttons (lists and tables) ----------
+   Every one has a title (tooltip) and an aria-label. Actions that change a record are inside its details view. */
+.bw-icon-btn {
+    width: 34px; height: 34px; padding: 0; flex-shrink: 0;
+    display: inline-grid; place-items: center; vertical-align: middle;
+    border-radius: 9px; border: 1px solid #C9D9EA; background: #FFFFFF; color: #0B132B;
+    font-size: 14px; line-height: 1; cursor: pointer; transition: background .15s, border-color .15s, color .15s;
+}
+.bw-icon-btn + .bw-icon-btn { margin-left: 6px; }
+.bw-icon-btn:not(:disabled):hover { background: #EEF5FC; border-color: #0077F6; color: #0077F6; }
+.bw-icon-btn.pri { background: #0077F6; border-color: #0077F6; color: #FFFFFF; }
+.bw-icon-btn.pri:not(:disabled):hover { background: #1B49B8; border-color: #1B49B8; color: #FFFFFF; }
+.bw-icon-btn:disabled { opacity: .45; cursor: not-allowed; }
+html[data-theme="dark"] .bw-icon-btn { background: #111a2e; border-color: #2c3e60; color: #E2E8F0; }
+html[data-theme="dark"] .bw-icon-btn:not(:disabled):hover { background: #182540; border-color: #4DA3FF; color: #FFFFFF; }
+html[data-theme="dark"] .bw-icon-btn.pri { background: #0077F6; border-color: #0077F6; color: #FFFFFF; }
+.bw-icon-btn:focus-visible { outline: 2px solid #0077F6; outline-offset: 2px; }
+/* the action bar at the bottom of a details window */
+.bw-detail-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 16px; border-top: 1px solid #DCE8F2; }
+html[data-theme="dark"] .bw-detail-actions { border-top-color: #22324f; }
+.bw-detail-actions .hint { flex: 1 1 100%; margin: 0; font-size: 12px; color: #5A6B85; text-align: right; }
+html[data-theme="dark"] .bw-detail-actions .hint { color: #9AAAC2; }
+
+/* ---------- 9. Small polish shared by the three portals ---------- */
+/* table rows show which one the pointer is on */
+html[data-theme="light"] :is(.bw-admin table, #tab-quotations table, #tab-projects table, #tab-financial table, #tab-activity table) tbody tr:not(.empty-row):hover > td { background: #F5F9FE; }
+html[data-theme="dark"] :is(.bw-admin table, #tab-quotations table, #tab-projects table, #tab-financial table, #tab-activity table) tbody tr:not(.empty-row):hover > td { background: rgba(147, 197, 253, 0.05); }
+/* buttons and inputs change smoothly; nothing moves for people who turned animations off */
+:is(button, .btn, .mc-btn, .bw-icon-btn, input, select, textarea) { transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease; }
+:is(input, select, textarea):disabled { cursor: not-allowed; opacity: .6; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+
+/* ---------- 10. Required fields and live validation (JS/api.js) ---------- */
+.bw-req { color: #DC2626; font-weight: 700; margin-left: 3px; }
+html[data-theme="dark"] .bw-req { color: #F87171; }
+.bw-live-err { display: block; margin-top: 5px; color: #DC2626; font-size: 12px; font-weight: 600; line-height: 1.4; }
+.bw-live-err:empty { display: none; }
+html[data-theme="dark"] .bw-live-err { color: #F87171; }
+:is(input, select, textarea).invalid { border-color: #DC2626 !important; }
+html[data-theme="dark"] :is(input, select, textarea).invalid { border-color: #F87171 !important; }

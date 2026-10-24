@@ -1,0 +1,64 @@
+/* =====================================================================
+   BeyondWires FAQ assistant  |  CSS/Faq.css
+   Loaded by LandingPage.html and HomePage.html (the floating Help button).
+   The window, the conversation and the question chips. Light by default; dark with [data-theme="dark"].
+   ===================================================================== */
+.faq-fab { position: fixed; right: 22px; bottom: 22px; z-index: 900; display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 20px 0 16px;
+  border: 0; border-radius: 24px; background: #0077F6; color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 24px -8px rgba(0, 119, 246, .6); }
+.faq-fab i, .faq-fab .material-icons-round { font-size: 20px; }
+.faq-fab:hover, .faq-fab.open { background: #1B49B8; }
+.faq-fab:focus-visible { outline: 3px solid #93C5FD; outline-offset: 3px; }
+
+.faq-pop { position: fixed; right: 22px; bottom: 82px; z-index: 1000; width: min(400px, calc(100vw - 32px)); height: min(600px, calc(100vh - 110px)); display: flex; flex-direction: column;
+  background: #fff; color: #0B132B; border: 1px solid #DCE8F2; border-radius: 18px; box-shadow: 0 24px 48px -12px rgba(11, 19, 43, .35); overflow: hidden; font-size: 14px;
+  font-family: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; text-align: left; }
+.faq-pop[hidden] { display: none; }
+.faq-pop-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; background: #0B132B; color: #F8FAFC; border-bottom: 3px solid #0077F6; }
+.faq-pop-head .who { display: flex; align-items: center; gap: 10px; }
+.faq-pop-head .who > span { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #0077F6; color: #fff; font-size: 16px; flex-shrink: 0; }
+.faq-pop-head h2 { margin: 0; font-size: 15.5px; color: #F8FAFC; }
+.faq-pop-head p { margin: 2px 0 0; font-size: 11.5px; color: #BFD3EE; }
+.faq-pop-x { width: 32px; height: 32px; border: 0; border-radius: 8px; background: rgba(255, 255, 255, .08); color: #fff; cursor: pointer; font-size: 18px; line-height: 1; }
+.faq-pop-x:hover { background: rgba(255, 255, 255, .18); }
+.faq-pop-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.faq-pop-foot { padding: 10px 14px; border-top: 1px solid #DCE8F2; font-size: 12px; line-height: 1.5; color: #5A6B85; background: #F8FAFC; }
+.faq-pop-foot a { color: #0077F6; font-weight: 700; text-decoration: none; }
+
+/* conversation */
+.bwfaq-log { flex: 1; min-height: 120px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: #F4F8FC; }
+.bwfaq-msg { max-width: 86%; padding: 9px 12px; border-radius: 14px; font-size: 13.5px; line-height: 1.55; }
+.bwfaq-msg.bot { align-self: flex-start; background: #fff; color: #24324A; border: 1px solid #DCE8F2; border-bottom-left-radius: 4px; }
+.bwfaq-msg.me { align-self: flex-end; background: #0077F6; color: #fff; border-bottom-right-radius: 4px; font-weight: 600; }
+.bwfaq-msg small { display: block; margin-bottom: 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: #1B49B8; }
+
+/* question picker */
+.bwfaq-pick { border-top: 1px solid #DCE8F2; padding: 10px 12px 12px; background: #fff; }
+.bwfaq-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.bwfaq-tools { display: grid; gap: 8px; margin-bottom: 8px; }
+.bwfaq-search input { width: 100%; box-sizing: border-box; height: 36px; padding: 0 12px; border: 1px solid #C9D9EA; border-radius: 10px; background: #fff; color: #0B132B; font: inherit; font-size: 13px; outline: none; }
+.bwfaq-search input:focus { border-color: #0077F6; box-shadow: 0 0 0 3px rgba(0, 119, 246, .15); }
+.bwfaq-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 3px; scrollbar-width: thin; }
+.bwfaq-cat { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 11px; border: 1px solid #C9D9EA; border-radius: 14px; background: #fff; color: #24324A; font: inherit; font-size: 11.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.bwfaq-cat .material-icons-round { font-size: 15px; }
+.bwfaq-cat.active { background: #0077F6; border-color: #0077F6; color: #fff; }
+.bwfaq-qs { display: flex; flex-wrap: wrap; gap: 6px; max-height: 128px; overflow-y: auto; }
+.bwfaq-chip { padding: 6px 11px; border: 1px solid #BFD8F6; border-radius: 14px; background: #EAF3FE; color: #1B49B8; font: inherit; font-size: 12.5px; font-weight: 600; text-align: left; cursor: pointer; }
+.bwfaq-chip:hover { background: #0077F6; border-color: #0077F6; color: #fff; }
+.bwfaq-cat:focus-visible, .bwfaq-chip:focus-visible { outline: 2px solid #0077F6; outline-offset: 2px; }
+.bwfaq-empty { margin: 0; padding: 10px; border: 1px dashed #C9D9EA; border-radius: 10px; color: #5A6B85; font-size: 12.5px; line-height: 1.5; }
+
+html[data-theme="dark"] .faq-pop { background: #111a2e; color: #F8FAFC; border-color: #22324f; }
+html[data-theme="dark"] .bwfaq-log { background: #0A1020; }
+html[data-theme="dark"] .bwfaq-msg.bot { background: #14213D; border-color: #22324f; color: #D4E6F1; }
+html[data-theme="dark"] .bwfaq-msg small { color: #93C5FD; }
+html[data-theme="dark"] .bwfaq-pick { background: #111a2e; border-top-color: #22324f; }
+html[data-theme="dark"] .faq-pop-foot { background: #0d1526; border-top-color: #22324f; color: #9AAAC2; }
+html[data-theme="dark"] .bwfaq-search input, html[data-theme="dark"] .bwfaq-cat:not(.active) { background: #0A1020; border-color: #2c3e60; color: #E2E8F0; }
+html[data-theme="dark"] .bwfaq-chip { background: rgba(0, 119, 246, .14); border-color: #2c4a7a; color: #BFD8F6; }
+html[data-theme="dark"] .bwfaq-chip:hover { background: #0077F6; color: #fff; }
+html[data-theme="dark"] .bwfaq-empty { border-color: #2c3e60; color: #9AAAC2; }
+@media (max-width: 600px) {
+  .faq-fab { right: 14px; bottom: 14px; height: 44px; padding: 0 14px; }
+  .faq-fab span { display: none; }
+  .faq-pop { right: 12px; left: 12px; bottom: 68px; width: auto; height: min(560px, calc(100vh - 90px)); }
+}
